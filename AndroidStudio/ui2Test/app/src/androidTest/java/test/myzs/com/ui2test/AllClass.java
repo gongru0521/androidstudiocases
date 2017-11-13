@@ -117,7 +117,8 @@ public class AllClass {
     //从图库选择照片
     public void selectpiclist()throws Exception{
         UiObject2 upiclist = ud.findObject(By.res("com.itsenpupulai.courierport:id/dialog_get_photo_tv_local"));
-        upiclist.click();
+       // upiclist.click();
+        ud.click(504,1057);
         Thread.sleep(10000);
         ud.click(145, 486);
         Thread.sleep(5000);
@@ -135,7 +136,8 @@ public class AllClass {
     //用相机拍照
     public  void camerepic()throws Exception{
         UiObject2 ucamer=ud.findObject(By.res("com.itsenpupulai.courierport:id/dialog_get_photo_tv_camera"));
-        ucamer.clickAndWait(Until.newWindow(),10000);
+        ud.click(478,906);
+       // ucamer.click();
         //进入相机内拍照
         //  UiObject2 camerbutton=ud.findObject(By.res("com.oppo.camera:id/shutter_button"));
         //  camerbutton.clickAndWait(Until.newWindow(),10000);
@@ -157,11 +159,11 @@ public class AllClass {
              Thread.sleep(5000);
              UiObject2 uyuyue=ud.findObject(By.res("com.itsenpupulai.courierport:id/title").text("预约单"));
              if(uyuyue==null) {
-                 ud.click(643, 1064);
+                 ud.click(725, 1066);
                  Thread.sleep(5000);
              }
              else{
-                 ud.click(708 ,1163);
+                 ud.click(727, 1178);
                  Thread.sleep(5000);
              }
 
@@ -211,14 +213,105 @@ public class AllClass {
         Thread.sleep(3000);
 
     }
+    //查看侧滑栏蚂蚁课堂中各个web页面->返回页面
+    public void ketang(String str) throws InterruptedException, IOException {
+        Thread.sleep(3000);
+        pic.screenshot(str);
+        Thread.sleep(10000);
+        //返回
+        ud.pressBack();
+        Thread.sleep(3000);
+    }
+    //  //输入身份证、原始密码、手机号、获取短信验证码、短信验证码
+    public void setings(UiObject2 uio,String str,String str2) throws InterruptedException, IOException {
+//点击文本框并输入内容
+        uio.click();
+        Thread.sleep(3000);
+        uio.setText(str);
+        Thread.sleep(3000);
+        //拍照
+        pic.screenshot(str2);
+        Thread.sleep(3000);
+        ud.pressBack();
+        Thread.sleep(3000);
 
 
+    }
+    //输入新手机号,更换手机号
+      /*
+  1.点击账号
+2.输入身份证号412823…
+3.输入原始密码111111
+4.输入新手机号18622222222
+5.点击发送验证码
+6.输入1546
+
+     */
+    public void newphoneupdate(String newphonenum) throws InterruptedException, IOException {
+
+//点击账号
+        UiObject2 uphone = ud.findObject(By.res("com.itsenpupulai.courierport:id/tv_phone_number"));
+        uphone.click();
+        Thread.sleep(3000);
+        pic.screenshot("testcase0031updatephone");
+        Thread.sleep(3000);
+        //输入身份证、原始密码、手机号、获取短信验证码、短信验证码
+        UiObject2 cardnum = ud.findObject(By.res("com.itsenpupulai.courierport:id/revise_username_et_idnum_et"));
+        setings(cardnum, "412823198901152507", "testcase0031shenfenhao");
+        //
+        UiObject2 password = ud.findObject(By.res("com.itsenpupulai.courierport:id/revise_username_pswd_et"));
+       setings(password, "111111", "testcase0031mima");
+        //
+        UiObject2 newphone = ud.findObject(By.res("com.itsenpupulai.courierport:id/revise_username_newphone_num_et"));
+        setings(newphone, newphonenum, "testcase0031newphone");
+        //发送验证码
+
+        UiObject2 yanzheng = ud.findObject(By.res("com.itsenpupulai.courierport:id/revise_username_code_btn").text("发送验证码"));
+        yanzheng.click();
+        Thread.sleep(3000);
+        //
+        UiObject2 yanzhengma = ud.findObject(By.res("com.itsenpupulai.courierport:id/revise_username_code_et"));
+        setings(yanzhengma, "1546", "testcase0031yanzhengma");
+        //提交确定信息
+
+        UiObject2 suerbutton = ud.findObject(By.res("com.itsenpupulai.courierport:id/btn_finish"));
+        suerbutton.click();
+        Thread.sleep(3000);
+
+    }
+
+    //修改密码
+    /*
+  1.点击修改密码
+2.输入旧密码
+3.输入新密码
+4.提交信息
+
+     */
+
+public void newpwdfun(String oldpwd,String newpwd) throws InterruptedException, IOException {
+    //进入修改密码页面
+    UiObject2 updatemima=ud.findObject(By.res("com.itsenpupulai.couierport:id/revise_pwd_rl"));
+   // updatemima.click();
+    ud.click(368,417);
+    Thread.sleep(3000);
+    pic.screenshot("testcase0032updatepdpages");
+    Thread.sleep(3000);
+    //输入旧密码和新密码
+    UiObject2 oldpwd2 = ud.findObject(By.res("com.itsenpupulai.courierport:id/origin_pwd"));
+    setings(oldpwd2, oldpwd, "testcase0032oldpwd");
+    Thread.sleep(3000);
+    UiObject2 newpwd2 = ud.findObject(By.res("com.itsenpupulai.courierport:id/new_pwd"));
+    setings(newpwd2, newpwd, "testcase0032newspwd");
+    Thread.sleep(3000);
+    //提交信息
+
+    UiObject2 suerbutton = ud.findObject(By.res("com.itsenpupulai.courierport:id/btn_finish"));
+    suerbutton.click();
+    Thread.sleep(3000);
 
 
-
-
-
-
+}
 
 
 

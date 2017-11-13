@@ -5,6 +5,8 @@ android {
     buildToolsVersion "25.0.3"
     defaultConfig {
         applicationId "test.myzs.com.ui2test"
+
+        multiDexEnabled true
         minSdkVersion 18
         targetSdkVersion 18
         versionCode 1
@@ -22,16 +24,11 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-       exclude group: 'com.android.support', module: 'support-annotations' })
-       compile 'com.android.support:appcompat-v7:25.3.1'
-    //testCompile 'junit:junit:4.12'
-    // androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
-    //  androidTestCompile 'com.android.support.test:rules:0.5'
-   // compile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
-    //compile 'com.android.support.test:runner:0.5'
-    //   compile 'com.android.support.test:rules:0.2'
-    //  compile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
-   compile files('F:/AndroidStudio/ui2Test/libs/espresso-contrib-2.2-release-no-dep.jar')
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:25.3.1'
+
+    compile files('F:/AndroidStudio/ui2Test/libs/espresso-contrib-2.2-release-no-dep.jar')
     compile files('F:/AndroidStudio/ui2Test/libs/espresso-core-2.2-release-no-dep.jar')
     compile files('F:/AndroidStudio/ui2Test/libs/espresso-idling-resource-2.2-release-no-dep.jar')
     compile files('F:/AndroidStudio/ui2Test/libs/espresso-intents-2.2-release-no-dep.jar')
@@ -45,11 +42,11 @@ dependencies {
     compile files('F:/AndroidStudio/ui2Test/libs/javax.annotation-api-1.2.jar')
     compile files('F:/AndroidStudio/ui2Test/libs/javax.inject-1.jar')
     compile files('F:/AndroidStudio/ui2Test/libs/jsr305-2.0.1.jar')
-
     compile files('F:/AndroidStudio/ui2Test/libs/junit-4.12.jar')
     compile files('F:/AndroidStudio/ui2Test/libs/rules-0.3-release-no-dep.jar')
     compile files('F:/AndroidStudio/ui2Test/libs/runner-0.3-release-no-dep.jar')
     compile files('F:/AndroidStudio/ui2Test/libs/uiautomator-v18-2.1.1-release-no-dep.jar')
+
 }
 
 /*

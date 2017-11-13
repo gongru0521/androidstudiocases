@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.By;
+import android.support.test.uiautomator.Direction;
 import android.support.test.uiautomator.UiAutomatorInstrumentationTestRunner;
 import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject2;
@@ -16,8 +17,10 @@ import android.util.Log;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 
@@ -28,8 +31,11 @@ import static org.junit.Assert.assertEquals;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
+@FixMethodOrder(value =MethodSorters.NAME_ASCENDING)
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest extends UiAutomatorInstrumentationTestRunner {
+
+
     public Instrumentation instrument= InstrumentationRegistry.getInstrumentation();
     public UiDevice ud= UiDevice.getInstance(instrument);
     AllClass ac=new AllClass();
@@ -66,13 +72,13 @@ public class ExampleInstrumentedTest extends UiAutomatorInstrumentationTestRunne
         );
 
     }
-  //  @Test
+    @Test
     //启动app
     /*
     1.启动app
     2.判断是否进入系统首页
      */
-    public void testCase001() throws Exception {
+    public void testcase001() throws Exception {
         //reset app
 
         for (int i = 0; i < 5; i++) {
@@ -108,8 +114,8 @@ public class ExampleInstrumentedTest extends UiAutomatorInstrumentationTestRunne
     1.点击订单列表
     2.上下滑动列表，滑动到系统底部
      */
-  // @Test
-    public void testCase002() throws Exception{
+   @Test
+    public void testcase002() throws Exception{
         Log.i("v","tescase002begin");
        //进入新的订单
        ac.newOrderList();
@@ -130,14 +136,14 @@ public class ExampleInstrumentedTest extends UiAutomatorInstrumentationTestRunne
 
 
     }
-   // @Test
+    @Test
     //accetpt
     /*
     1.点击接单按钮
     2.判断是不是首单、是不是预约单，接单
      */
     //新的订单列表接单
-    public void testCase003()throws Exception {
+    public void testcase003()throws Exception {
         Log.i("v","testcase003begin");
 
         UiObject2 ujedan = ud.findObject(By.res("com.itsenpupulai.courierport:id/takeorder"));
@@ -150,15 +156,15 @@ public class ExampleInstrumentedTest extends UiAutomatorInstrumentationTestRunne
        String uchaxunstr=uchaxun.getText();
         Assert.assertEquals("查询",uchaxunstr);
 */
-            pic.screenshot("testcase003");
+       //     pic.screenshot("testcase003");
             //
 
       //  }
 
     }
     //刷新我的订单
-//    @Test
-    public void testCase005555() throws Exception{
+ //  @Test
+    public void testcase005555() throws Exception{
         Log.i("v","testcase004begin");
        Thread.sleep(10000);
        UiObject2 umylist= ud.findObject(By.res("com.itsenpupulai.courierport:id/my_task_rl"));
@@ -179,13 +185,22 @@ public class ExampleInstrumentedTest extends UiAutomatorInstrumentationTestRunne
 4.从图库上传图片
 5.输入取货码
 6.完成订单
+7.如果是“收取货款订单”，点击返回到系统首页
      */
- //  @Test
-   public void testCase004()throws Exception {
+  @Test
+   public void testcase004()throws Exception {
        Log.i("v", "testcase004begin");
-       liuCheng liucheng=new liuCheng();
-       //从图库选择相片
-       liucheng.testCase004road(true);
+      UiObject2 ushouqu=ud.findObject(By.res("com.itsenpupulai.courierport:id/payment_tv"));
+      if(ushouqu==null) {
+          liuCheng liucheng = new liuCheng();
+          //从图库选择相片
+          liucheng.testCase004road(true);
+      }
+      else {
+          Thread.sleep(10000);
+          pic.screenshot("testcese003back");
+          ud.pressBack();
+      }
    }
 
     //从新的订单列表点击进入订单详情
@@ -193,8 +208,8 @@ public class ExampleInstrumentedTest extends UiAutomatorInstrumentationTestRunne
     1.进入“新的订单页面”
    2.点击订单，进入订单详情页面
      */
-  // @Test
-    public void testCase0051()throws Exception{
+    @Test
+    public void testcase0051()throws Exception{
 
       //先进入我的新订单列表
      ac.newOrderList();
@@ -212,8 +227,8 @@ public class ExampleInstrumentedTest extends UiAutomatorInstrumentationTestRunne
     1.点击接单按钮
     2.判断是不是首单、是不是预约单，接单
      */
- //   @Test
-    public void testCase0052()throws Exception{
+    @Test
+    public void testcase006()throws Exception{
 
         UiObject2 ujie=ud.findObject(By.res("com.itsenpupulai.courierport:id/submit").text("接单"));
         ac.jiedan(ujie);
@@ -231,20 +246,28 @@ public class ExampleInstrumentedTest extends UiAutomatorInstrumentationTestRunne
 5.输入取货码
 6.完成订单
      */
-   // @Test
-    public void testCase0053()throws Exception {
+    @Test
+    public void testcase007()throws Exception {
         Thread.sleep(5000);
         Log.i("v", "testcase0053begin");
-        liuCheng liucheng=new liuCheng();
-        //从相机拍照
-        liucheng.testCase004road(false);
-        Thread.sleep(5000);
-        pic.screenshot("testcase0053");
+        UiObject2 ushouqu=ud.findObject(By.res("com.itsenpupulai.courierport:id/payment_tv"));
+        if(ushouqu==null) {
+            liuCheng liucheng = new liuCheng();
+            //从相机拍照
+            liucheng.testCase004road(false);
+            Thread.sleep(5000);
+            pic.screenshot("testcase0053");
+        }
+        else {
+            Thread.sleep(10000);
+            pic.screenshot("testcese005back");
+            ud.pressBack();
+        }
     }
 
     //侧滑栏设置->打开侧滑栏
-   //@Test
-     public void testCase008()throws Exception{
+   @Test
+     public void testcase008()throws Exception{
         //打开侧栏
         ac.cehual();
        // uperson.clickAndWait(Until.newWindow(),10000);
@@ -253,8 +276,8 @@ public class ExampleInstrumentedTest extends UiAutomatorInstrumentationTestRunne
 
     }
     //进入我的钱包
-   // @Test
-    public void testCase009()throws Exception {
+ @Test
+    public void testcase00900()throws Exception {
         Thread.sleep(5000);
         UiObject2 myqian = ud.findObject(By.res("com.itsenpupulai.courierport:id/mywallet_ll"));
 
@@ -264,8 +287,8 @@ public class ExampleInstrumentedTest extends UiAutomatorInstrumentationTestRunne
         Thread.sleep(5000);
     }
     //查看保证金
-  //  @Test
-    public void testCase0010()throws Exception {
+  @Test
+    public void testcase00910()throws Exception {
         Thread.sleep(5000);
         //查看保证金
         UiObject2 ubao = ud.findObject(By.res("com.itsenpupulai.courierport:id/my_money_rl_ensure_money"));
@@ -286,8 +309,8 @@ public class ExampleInstrumentedTest extends UiAutomatorInstrumentationTestRunne
 6.滑动支出列表
 7.点击页面返回按钮
      */
-   // @Test
-    public void testCase0011()throws Exception {
+    @Test
+    public void testcase00911()throws Exception {
         //进入账户明细
         UiObject2 udetail = ud.findObject(By.res("com.itsenpupulai.courierport:id/money_change_details"));
         udetail.clickAndWait(Until.newWindow(), 10000);
@@ -335,8 +358,8 @@ public class ExampleInstrumentedTest extends UiAutomatorInstrumentationTestRunne
 6.滑动列表
 7.点击页面返回按钮
      */
-    //    @Test
-        public void testCase0012()throws Exception {
+       @Test
+        public void testcase00912()throws Exception {
         UiObject2 ujilu=ud.findObject(By.res("com.itsenpupulai.courierport:id/transaction_details"));
         ujilu.clickAndWait(Until.newWindow(),100000);
         Thread.sleep(5000);
@@ -375,8 +398,8 @@ public class ExampleInstrumentedTest extends UiAutomatorInstrumentationTestRunne
     1.点击“提现”按钮
 2.点击修改账号按钮
      */
-   // @Test
-    public void testcase0013() throws InterruptedException, IOException {
+    @Test
+    public void testcase00913() throws InterruptedException, IOException {
        UiObject2 tixianbutton=ud.findObject(By.res("com.itsenpupulai.courierport:id/get_cash"));
         tixianbutton.click();
         Thread.sleep(5000);
@@ -396,9 +419,9 @@ public class ExampleInstrumentedTest extends UiAutomatorInstrumentationTestRunne
 5.输入验证码
 6.点击确定
      */
-  //  @Test
+   @Test
 
-    public void testcase0014() throws InterruptedException, IOException {
+    public void testcase00914() throws InterruptedException, IOException {
         //点击修改账号
         Thread.sleep(3000);
         UiObject2 updatezhang=ud.findObject(By.res("com.itsenpupulai.courierport:id/modify_account").text("修改账户"));
@@ -446,9 +469,9 @@ public class ExampleInstrumentedTest extends UiAutomatorInstrumentationTestRunne
 3.判断是否停留在这个页面上，如果不是点击申请提现页面
      */
 
-   // @Test
+   @Test
 
-    public void testcase0015() throws InterruptedException, IOException {
+    public void testcase00915() throws InterruptedException, IOException {
         //输入金额
         UiObject2 umoney=ud.findObject(By.res("com.itsenpupulai.courierport:id/money"));
         umoney.click();
@@ -484,9 +507,9 @@ public class ExampleInstrumentedTest extends UiAutomatorInstrumentationTestRunne
 5.输入验证码
 6.点击确定
      */
-//@Test
+@Test
 
-public void testcase0016() throws InterruptedException, IOException {
+public void testcase00916() throws InterruptedException, IOException {
     //点击修改账号
     Thread.sleep(3000);
     UiObject2 updatezhang=ud.findObject(By.res("com.itsenpupulai.courierport:id/modify_account").text("修改账户"));
@@ -545,9 +568,9 @@ public void testcase0016() throws InterruptedException, IOException {
 3.判断是否停留在这个页面上，如果是，点击返回
      */
 
-  //  @Test
+  @Test
 
-    public void testcase0017() throws InterruptedException, IOException {
+    public void testcase00917() throws InterruptedException, IOException {
         //输入金额
         UiObject2 umoney=ud.findObject(By.res("com.itsenpupulai.courierport:id/money"));
         umoney.click();
@@ -583,9 +606,9 @@ public void testcase0016() throws InterruptedException, IOException {
 
      */
 
-//@Test
+@Test
 
-public void testcase0018() throws InterruptedException, IOException {
+public void testcase00918() throws InterruptedException, IOException {
     Thread.sleep(5000);
     UiObject2 tixianbutton=ud.findObject(By.res("com.itsenpupulai.courierport:id/get_cash"));
     Assert.assertEquals("提现",tixianbutton.getText());
@@ -603,8 +626,8 @@ public void testcase0018() throws InterruptedException, IOException {
 2.滑动列表
     */
 
- //  @Test
-   public void testcase0019() throws InterruptedException, IOException, UiObjectNotFoundException {
+ @Test
+   public void testcase00919() throws InterruptedException, IOException, UiObjectNotFoundException {
        //打开侧滑栏
        ac.cehual();
        Thread.sleep(5000);
@@ -635,16 +658,15 @@ public void testcase0018() throws InterruptedException, IOException {
        }
 
    }
-
-   //testcase0020
+    //testcase0020
     //侧滑栏->入订单活动
     /*
 1.侧滑栏->滑动活动列表
 2.点击“查看详情”
 3.点击我知道了，关闭弹框
      */
-  //  @Test
-    public  void tectcase0020()throws InterruptedException, IOException, UiObjectNotFoundException {
+  @Test
+    public  void testcase00920()throws InterruptedException, IOException, UiObjectNotFoundException {
         //打开侧滑栏
         ac.cehual();
         Thread.sleep(5000);
@@ -685,8 +707,8 @@ public void testcase0018() throws InterruptedException, IOException {
 10.点击我知道了，关闭弹框
      */
 
- //   @Test
-    public  void tectcase0021()throws InterruptedException, IOException, UiObjectNotFoundException {
+   @Test
+    public  void testcase00921()throws InterruptedException, IOException, UiObjectNotFoundException {
         //点击历史明细按钮
         Thread.sleep(3000);
         UiObject2 hisotorylist=ud.findObject(By.res("com.itsenpupulai.courierport:id/top_call_kefu").text("历史明细"));
@@ -747,8 +769,8 @@ public void testcase0018() throws InterruptedException, IOException {
 4.查看订单详情
      */
 
-  //  @Test
-    public  void tectcase0022()throws InterruptedException, IOException, UiObjectNotFoundException {
+  @Test
+    public  void testcase00922()throws InterruptedException, IOException, UiObjectNotFoundException {
         Thread.sleep(3000);
         //打开侧滑栏
         ac.cehual();
@@ -791,8 +813,8 @@ public void testcase0018() throws InterruptedException, IOException {
 5.点击3次返回按钮
      */
 
-  //  @Test
-    public  void tectcase0023()throws InterruptedException, IOException, UiObjectNotFoundException {
+    @Test
+    public  void testcase00923()throws InterruptedException, IOException, UiObjectNotFoundException {
         Thread.sleep(3000);
         pic.screenshot("testcase00230000000");
 //判断是否是评价按钮或查看评价按钮
@@ -868,8 +890,8 @@ public void testcase0018() throws InterruptedException, IOException {
     1.点击“订单热力图”
 2.点击关闭按钮
      */
-    @Test
-    public  void tectcase0024()throws InterruptedException, IOException, UiObjectNotFoundException {
+  @Test
+    public  void testcase00924()throws InterruptedException, IOException, UiObjectNotFoundException {
         //打开侧滑栏
         ac.cehual();
         Thread.sleep(3000);
@@ -891,8 +913,8 @@ public void testcase0018() throws InterruptedException, IOException {
     1.点击“推荐奖励”
     2.点击关闭按钮
      */
-    @Test
-    public  void tectcase0025()throws InterruptedException, IOException, UiObjectNotFoundException {
+  @Test
+    public  void testcase00925()throws InterruptedException, IOException, UiObjectNotFoundException {
         //打开侧滑栏
         ac.cehual();
         Thread.sleep(3000);
@@ -912,8 +934,8 @@ public void testcase0018() throws InterruptedException, IOException {
    1.点击“蚂蚁商城”
    2.点击关闭按钮
      */
-    @Test
-    public  void tectcase0026()throws InterruptedException, IOException, UiObjectNotFoundException {
+   @Test
+    public  void testcase00926()throws InterruptedException, IOException, UiObjectNotFoundException {
         //打开侧滑栏
         ac.cehual();
         Thread.sleep(3000);
@@ -928,7 +950,7 @@ public void testcase0018() throws InterruptedException, IOException {
 
     }
 
-    //tectcase0027
+    //testcase0027
     //进入在线客服页面添加反馈并关闭反馈
     /*
    1.点击“在线客服”
@@ -940,7 +962,7 @@ public void testcase0018() throws InterruptedException, IOException {
 7.提交信息
      */
     @Test
-    public  void tectcase0027()throws InterruptedException, IOException, UiObjectNotFoundException {
+    public  void testcase00927()throws InterruptedException, IOException, UiObjectNotFoundException {
         //打开侧滑栏
         ac.cehual();
         Thread.sleep(3000);
@@ -960,10 +982,330 @@ public void testcase0018() throws InterruptedException, IOException {
         //滑动选项
         ud.drag(517,1725,539,1455,3);
         Thread.sleep(3000);
+        pic.screenshot("testcase0027huadongxuanxiang");
+        //点击确定按钮，提交选项
+        ud.click(1000,1323);
+        Thread.sleep(3000);
+        pic.screenshot("testcase0027tijiaoxinxi");
+        Thread.sleep(3000);
+        //编辑文字信息
+        UiObject2 ufeedbackSTring=ud.findObject(By.res("com.itsenpupulai.courierport:id/feedback_et"));
+        ufeedbackSTring.click();
+        Thread.sleep(3000);
+        ufeedbackSTring.setText("ok! 非常感谢。。。。。");
+        Thread.sleep(3000);
+        ud.pressBack();
+        pic.screenshot("testcase0027bianjiwenzi");
+        Thread.sleep(3000);
+        //提交确定按钮
+        UiObject2 utijiao=ud.findObject(By.res("com.itsenpupulai.courierport:id/submit").text("提交"));
+        utijiao.click();
+        Thread.sleep(3000);
+        //返回到系统首页
+       // ud.pressBack();
+       // Thread.sleep(3000);
+
 
 
     }
 
+    //testcase0028
+    //反馈信息中添加文字、图片并且关闭
+    /*
+  1.点击信息
+2.输入信息
+3.添加图片
+4.关闭会话
+     */
+  @Test
+    public  void testcase00928() throws Exception {
+
+        Thread.sleep(3000);
+        ud.click(496,990);
+        Thread.sleep(3000);
+        pic.screenshot("testcase0028inruxinxiyemian");
+        Thread.sleep(3000);
+        //2.输入信息
+       // 3.添加图片
+        UiObject2 uedit=ud.findObject(By.res("com.itsenpupulai.courierport:id/report_index_et_msg"));
+        uedit.click();
+        Thread.sleep(3000);
+        uedit.setText("你好，你好你好!");
+        pic.screenshot("testcase0028jinruxinxiyemian");
+        Thread.sleep(3000);
+        ud.click(992,968);
+        Thread.sleep(3000);
+        //
+        uedit.click();
+        Thread.sleep(3000);
+        //从图库上传图片
+        ud.click(1004,962);
+        Thread.sleep(3000);
+        ac.selectpiclist();
+        Thread.sleep(3000);
+        pic.screenshot("testcase0028tukupic");
+        //从相机拍照选择图片
+        Thread.sleep(3000);
+        uedit.click();
+        Thread.sleep(3000);
+        ud.click(1004,962);
+        Thread.sleep(3000);
+        ac.camerepic();
+        Thread.sleep(3000);
+        pic.screenshot("testcase0028camerapic");
+        Thread.sleep(3000);
+        //关闭会话->选择一般->点击确定
+        ud.click(968,145);
+        Thread.sleep(3000);
+        ud.click(462,968);
+        Thread.sleep(3000);
+        pic.screenshot("testcase0028closing");
+        ud.click(755,1229);
+        Thread.sleep(3000);
+        //返回到系统首页
+        ud.pressBack();
+        Thread.sleep(3000);
+
+
+
+    }
+    //testcase0029
+    //查看蚂蚁课堂各个页面
+    /*
+   1.点击"侧滑栏"->“蚂蚁课堂”
+2.点击配送教程
+3.停留页面1min
+4.返回到蚂蚁课堂
+5.点击常见问题
+6.返回到蚂蚁课堂，系统返回键
+7.规章制度、蚂蚁装备、保险协议、注册条款同上
+8.返回到系统首页
+     */
+   @Test
+    public  void testcase00929()throws InterruptedException, IOException, UiObjectNotFoundException {
+        //打开侧滑栏
+        ac.cehual();
+        Thread.sleep(3000);
+        //打开蚂蚁课堂
+        UiObject2 ulearning=ud.findObject(By.res("com.itsenpupulai.courierport:id/explain").text("蚂蚁课堂"));
+        ulearning.click();
+        Thread.sleep(3000);
+        pic.screenshot("testcase0029learningpages");
+        Thread.sleep(3000);
+        //点击配送教程
+        ud.click(282,813);
+        Thread.sleep(10000);
+       //进入Web页面->返回页面
+        ac.ketang("testcase0029peisongjiaocheng");
+        //点击常见问题并进入页面-》返回页面
+         ud.click(286,964);
+        ac.ketang("testcase0029requestionlists");
+        //规章制度->->返回页面
+        ud.click(360,1155);
+        ac.ketang("testcase0029guizhangzhidu");
+        //蚂蚁装备->返回页面
+        ud.click(325,1296);
+        ac.ketang("testcase0029mayizhuangbei");
+        //保险协议-》fanhui
+        ud.click(325,1455);
+        ac.ketang("testcase0029baoxianexieyi");
+        //注册协议-》fanhui
+        ud.click(325,1604);
+        ac.ketang("testcase0029zhucetiaokuan");
+//返回到系统首页
+        ud.pressBack();
+    }
+
+
+    //testcase0030
+    //进入设置页面
+    /*
+   1.点击"侧滑栏"->“设置”
+     */
+    @Test
+    public  void testcase00930()throws InterruptedException, IOException, UiObjectNotFoundException {
+        //打开侧滑栏
+        ac.cehual();
+        Thread.sleep(3000);
+        //进入设置页面
+        UiObject2 usettings=ud.findObject(By.res("com.itsenpupulai.courierport:id/setting").text("设置"));
+        usettings.click();
+        Thread.sleep(3000);
+        pic.screenshot("testcase0030settingpages");
+        Thread.sleep(3000);
+    }
+
+    //testcase0031
+    //修改账号
+    /*
+  1.点击账号
+2.输入身份证号412823…
+3.输入原始密码111111
+4.输入新手机号18622222222
+5.点击发送验证码
+6.输入1546
+
+     */
+    @Test
+    public  void testcase00931()throws InterruptedException, IOException, UiObjectNotFoundException {
+
+        ac.newphoneupdate("18622222222");
+        Thread.sleep(3000);
+        ac.newphoneupdate("18638732236");
+
+    }
+    //testcase0032
+    //修改密码
+    /*
+  1.点击修改密码
+2.输入旧密码
+3.输入新密码
+4.提交信息
+
+     */
+   @Test
+    public  void testcase00932()throws InterruptedException, IOException, UiObjectNotFoundException{
+        //进入修改密码页面
+       ac.newpwdfun("111111","123456");
+      Thread.sleep(3000);
+        ac.newpwdfun("123456","111111");
+        //
+
+    }
+    //testcase0033
+    //开启&关闭接单中、配送流程语音提示、接收推送订单
+    /*
+1.点击按钮
+2.再次点击按钮
+
+     */
+   @Test
+    public  void testcase00933()throws InterruptedException, IOException, UiObjectNotFoundException{
+//开工或者收工按钮
+        UiObject2 kaigong=ud.findObject(By.res("com.itsenpupulai.courierport:id/setting_tv_is_work").text("接单中"));
+        if(kaigong!=null){
+            Thread.sleep(3000);
+            pic.screenshot("testcase0033yikaigong");
+            Thread.sleep(3000);
+            kaigong.click();
+            Thread.sleep(3000);
+            pic.screenshot("testcase0033yishougong2");
+            Thread.sleep(3000);
+            //
+            kaigong.click();
+            Thread.sleep(3000);
+            pic.screenshot("testcase0033yishougong2");
+            Thread.sleep(3000);
+
+        }
+        else{
+            pic.screenshot("testcase0033yishougong");
+            Thread.sleep(3000);
+            ud.click(994,1053);
+            Thread.sleep(3000);
+            pic.screenshot("testcase0033yikaigong2");
+            Thread.sleep(3000);
+            //
+            ud.click(994,1053);
+            Thread.sleep(3000);
+            pic.screenshot("testcase0033yikaigong2");
+            Thread.sleep(3000);
+
+        }
+//配送流程语音关闭或开启
+        ud.click(994,1170);
+        Thread.sleep(3000);
+        pic.screenshot("testcase0033yuyin");
+        Thread.sleep(3000);
+        //
+        ud.click(994,1170);
+        Thread.sleep(3000);
+        pic.screenshot("testcase0033yuyin2");
+        Thread.sleep(3000);
+//接收推单开关
+        ud.click(994,1292);
+        Thread.sleep(3000);
+        pic.screenshot("testcase0033tuidan");
+        Thread.sleep(3000);
+        //
+        ud.click(994,1292);
+        Thread.sleep(3000);
+        pic.screenshot("testcase0033tuidan2");
+        Thread.sleep(3000);
+    }
+    //离线地图下载
+    /*
+    1.查看“点击下载”按钮是否存在
+2.若不存在择继续下载
+     */
+
+   @Test
+    public  void testcase00934()throws InterruptedException, IOException, UiObjectNotFoundException{
+        //判断离线地图是否已下载
+
+        UiObject2 ditu=ud.findObject(By.res("com.itsenpupulai.courierport:id/push_order_offline_city_tv").text("点击下载"));
+        if(ditu!=null){
+
+            pic.screenshot("testcase0034tditunotexist");
+            Thread.sleep(3000);
+            ditu.click();
+            Thread.sleep(3000);
+            //确认下载
+            ud.click(733,1092);
+            Thread.sleep(30000);
+            //
+            pic.screenshot("testcase0034tditundownloadsuccess");
+
+            Thread.sleep(3000);
+    }
+    }
+    // 拨打客户电话
+    /*
+    1.点击拨打客户电话
+2.弹框上点击“确定”按钮
+     */
+
+   @Test
+    public  void testcase00935()throws InterruptedException, IOException, UiObjectNotFoundException{
+        //点击拨打客服电话
+        ud.click(478,1541);
+        Thread.sleep(3000);
+        pic.screenshot("testcase0035tphonecall");
+        Thread.sleep(3000);
+        ud.click(723,1096);
+        Thread.sleep(3000);
+        //
+        //无sim卡，点击我知道了按钮
+        ud.click(498, 1051);
+        Thread.sleep(10000);
+
+    }
+    //点击关于蚂蚁专送
+    /*
+    1.滑动页面到底部
+2.点击“关于蚂蚁专送”
+3.点击返回，再次返回到系统首页
+     */
+    @Test
+    public  void testcase00936()throws InterruptedException, IOException, UiObjectNotFoundException{
+
+        //滑动到底部
+        UiObject2 usset= ud.findObject(By.clazz("android.widget.ScrollView"));
+        usset.fling(Direction.DOWN);
+        Thread.sleep(3000);
+        pic.screenshot("testcase0036huadong");
+        Thread.sleep(3000);
+//2.点击“关于蚂蚁专送”
+
+        //UiObject2 uabour= ud.findObject(By.clazz("android.widget.ScrollView"));
+       // uabour.click();
+        ud.click(494,1549);
+        Thread.sleep(3000);
+        pic.screenshot("testcase0036aboutzhuansong");
+        Thread.sleep(3000);
+        //点击返回，再次返回到系统首页
+        ud.pressBack();
+        ud.pressBack();
 
 
 
@@ -981,10 +1323,5 @@ public void testcase0018() throws InterruptedException, IOException {
 
 
 
-
-
-
-
-
-
+    }
 }
